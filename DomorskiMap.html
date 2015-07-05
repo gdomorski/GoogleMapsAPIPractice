@@ -8,14 +8,13 @@
 <style>
 
 
- #map {
+  #map {
     border-style: solid;
     border-width: 5px;
   }
 
   #header { 
   text-align: center;
-  font: verdana;
   color: #7AC6D3;
 
   }
@@ -134,6 +133,7 @@
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i][1], locations[i][2]),
         map: map,
+        //makes the markers bounce down on to the map
         animation: google.maps.Animation.DROP,
         icon: icons[iconCounter]
       });
@@ -154,14 +154,13 @@
       }
     }
 
+    //zooming to fit all markers
     function autoCenter() {
-      //  Create a new viewpoint bound
       var bounds = new google.maps.LatLngBounds();
-      //  Go through each...
+      //loop through the markers
       for (var i = 0; i < markers.length; i++) {  
-                bounds.extend(markers[i].position);
+            bounds.extend(markers[i].position);
       }
-      //  Fit these bounds to the map
       map.fitBounds(bounds);
     }
     autoCenter();
