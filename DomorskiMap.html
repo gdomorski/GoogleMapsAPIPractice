@@ -1,27 +1,127 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <style>
-      #map-canvas {
-        width: 500px;
-        height: 400px;
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+  <title>Domorski's Coding Bootcamps Map</title> 
+  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</head> 
+<body>
+  <div id="map" style="width: 900px; height: 600px; "></div>
+  
+  <script>
+   
+    var locations = [
+      ['<h4>Hack Reactor</h4>', 37.783724, -122.408978],
+      ['<h4>Fullstack Academy/h4>', 40.705061, -74.009154],
+      ['<h4>Flatiron School</h4>', 40.705329, -74.01397],
+      ['<h4>AppAcademy San Francisco</h4>', 37.781014, -122.41142],
+      ['<h4>AppAcademy New York</h4>', 40.706552, -74.00904],
+      ['<h4>Dev Bootcamp San Francisco</h4>', 37.784585, -122.397214],
+      ['<h4>Dev Bootcamp New York</h4>', 40.706552, -74.00904],
+      ['<h4>Dev Bootcamp Chicago</h4>', 41.889685, -87.63775],
+      ['<h4>MakerSquare San Francisco</h4>', 37.787496, -122.399909],
+      ['<h4>Ada Developers Academy</h4>', 47.6106748, -122.3355833],
+      ['<h4>Betamore Academy</h4>', 39.276763, -76.6120158],
+      ['<h4>Big Nerd Ranch</h4>', 33.76061, -84.322238],
+      ['<h4>Hackbright Academy</h4>', 37.788633, -122.411475],
+      ['<h4>Bitmaker Labs</h4>', 43.647477, -79.38709],
+      ['<h4>Codeup</h4>', 29.428434, -98.492251],
+      ['<h4>Coding Campus</h4>', 40.238715, -111.659079],
+      ['<h4>Codeup</h4>', 29.428434, -98.492251],
+      ['<h4>Coding Dojo Seattle</h4>', 47.609809, -122.1965031],
+      ['<h4>Coding Dojo Silicon Valley</h4>', 37.3768183, -121.912378],
+      ['<h4>Coding House</h4>', 37.429007, -122.253211],
+      ['<h4>Craftsmanship Academy</h4>', 35.595816, -78.878423],
+      ['<h4>DaVinci Coders</h4>', 39.987244, -105.136354],
+      ['<h4>Deep Dive Coding</h4>', 35.0859991, -106.6499165],
+      ['<h4>DevMountain</h4>', 40.226294, -111.660776],
+      ['<h4>DevPoint Labs</h4>', 40.760986, -111.882878],
+      ['<h4>Disruption Institute</h4>', 39.0131487, -94.5778861],
+      ['<h4>General Assembly NY</h4>', 39.987244, -105.136354],
+      ['<h4>General Assembly Hong Kong</h4>', 22.2830469, 114.1570795],
+      ['<h4>General Assembly Austin</h4>', 30.268573, -97.7429936],
+      ['<h4>General Assembly London</h4>', 51.5225339, -0.1094356],
+      ['<h4>General Assembly Atlanta</h4>', 33.772251, -84.365919],
+      ['<h4>General Assembly Washington D.C.</h4>', 38.9048542, -77.0338118],
+      ['<h4>General Assembly Seattle</h4>', 47.6233544, -122.3301121],
+      ['<h4>General Assembly Los Angeles</h4>', 34.0129158, -118.4951411],
+      ['<h4>General Assembly Melbourne</h4>', -37.8182661, 144.9623883],
+      ['<h4>General Assembly Sydney</h4>', -33.869824, 151.206423],
+      ['<h4>General Assembly Singapore</h4>', 1.3005397, 103.8367624],
+      ['<h4>General Assembly Boston</h4>', 42.3492404, -71.0500459],
+      ['<h4>General Assembly Chicago</h4>', 41.8905501, -87.6268473],
+      ['<h4>General Assembly San Francisco</h4>', 37.7908343, -122.4015725]
+    ];
+    
+    // Setup the different icons and shadows
+    var iconURL = 'http://maps.google.com/mapfiles/ms/icons/';
+    
+    var icons = [
+      iconURL + 'red-dot.png',
+      iconURL + 'green-dot.png',
+      iconURL + 'blue-dot.png',
+      iconURL + 'orange-dot.png',
+      iconURL + 'purple-dot.png',
+      iconURL + 'pink-dot.png',      
+      iconURL + 'yellow-dot.png'
+    ]
+    var iconsLength = icons.length;
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: new google.maps.LatLng(-37.92, 151.25),
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      streetViewControl: false,
+      panControl: false,
+      zoomControlOptions: {
+         position: google.maps.ControlPosition.LEFT_BOTTOM
       }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <script>
-      function initialize() {
-        var mapCanvas = document.getElementById('map-canvas');
-        var mapOptions = {
-          center: new google.maps.LatLng(44.5403, -78.5463),
-          zoom: 8,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow({
+      maxWidth: 160
+    });
+
+    var markers = new Array();
+    
+    var iconCounter = 0;
+    
+    // Add the markers and infowindows to the map
+    for (var i = 0; i < locations.length; i++) {  
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map,
+        icon: icons[iconCounter]
+      });
+
+      markers.push(marker);
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
         }
-        var map = new google.maps.Map(mapCanvas, mapOptions)
+      })(marker, i));
+      
+      iconCounter++;
+      
+      if(iconCounter >= iconsLength) {
+        iconCounter = 0;
       }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-  </head>
-  <body>
-    <div id="map-canvas"></div>
-  </body>
+    }
+
+    function autoCenter() {
+      //  Create a new viewpoint bound
+      var bounds = new google.maps.LatLngBounds();
+      //  Go through each...
+      for (var i = 0; i < markers.length; i++) {  
+                bounds.extend(markers[i].position);
+      }
+      //  Fit these bounds to the map
+      map.fitBounds(bounds);
+    }
+    autoCenter();
+  </script> 
+</body>
 </html>
