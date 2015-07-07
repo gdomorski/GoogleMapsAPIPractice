@@ -140,16 +140,21 @@
 
       markers.push(marker);
 
+      //one the item is clicked
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
+          //check the conntent of the window to the appropiate marker
           infowindow.setContent(locations[i][0]);
+          //open the info window
           infowindow.open(map, marker);
         }
       })(marker, i));
       
       iconCounter++;
       
+      //if we go over the amount of colored icons we have
       if(iconCounter >= iconsLength) {
+        //set it to 0
         iconCounter = 0;
       }
     }
