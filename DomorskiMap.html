@@ -23,6 +23,11 @@
 
 </head> 
 <body bgcolor="#000080">
+
+  
+
+
+
   <h1 id="header">Greg Domorski's Hacker School Map</h1>
 
 
@@ -31,10 +36,7 @@
 
 
   <script>
-
-
-
-   
+  
     var locations = [
       ['<h4>Hack Reactor</h4>', 37.783724, -122.408978],
       ['<h4>Fullstack Academy</h4>', 40.705061, -74.009154],
@@ -97,6 +99,8 @@
     // Setup the different icons and shadows
     var iconURL = 'http://maps.google.com/mapfiles/ms/icons/';
     
+
+    //each colored icon is going to eventually represent the type of language each school focuses on.
     var icons = [
       iconURL + 'red-dot.png',
       iconURL + 'green-dot.png',
@@ -169,6 +173,14 @@
       map.fitBounds(bounds);
     }
     autoCenter();
+
+
+
+
+
+
   </script> 
+
+ 
 </body>
 </html>
